@@ -8,7 +8,8 @@
 
 public class PrintCell extends Cell {
     // Attributes
-    private static String[] display = {"▢", "▣"}; //{" ", "█"}
+    //private static String[] display = {"▢", "▣"}; 
+    private static String[] display = {" ", "▣"}; //█"};
 
     // Constructors
     public PrintCell() {

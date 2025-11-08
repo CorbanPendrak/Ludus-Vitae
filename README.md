@@ -5,7 +5,7 @@ This is a Java application for Conway's Game of Life. It is currently in Beta an
 - [ ] Create classes
   - [x] Cell
   - [x] PrintCell
-  - [ ] PrintBoard
+  - [x] PrintBoard
   - [ ] GraphicCell
   - [ ] GraphicBoard
   - [ ] Options
@@ -22,7 +22,11 @@ This is a Java application for Conway's Game of Life. It is currently in Beta an
   - [ ] Keyboard controls
   - [ ] Editing
 - [ ] Print version
+  - [x] Viewing
+  - [ ] Input
 - [ ] Graphic version
+  - [ ] Viewing
+  - [ ] Input
 - [ ] Styling
   - [ ] Rounded corners
   - [ ] Color modes

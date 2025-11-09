@@ -15,6 +15,7 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
     protected int width;
     protected int height;
     protected Boolean paused;
+    protected int speed;
     protected ArrayList<ArrayList<GraphicCell>> cells;
 
     public GraphicBoard() {
@@ -25,6 +26,7 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         this.width = width;
         this.height = height;
         this.paused = false;
+        this.speed = 100;
 
         cells = new ArrayList<ArrayList<GraphicCell>>();
         for (int i = 0; i < height; i++) {
@@ -59,6 +61,49 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         } catch (Exception e) {
             System.out.println(e);
         }
+        System.setProperty("apple.laf.useScreenMenuBar", "true");
+
+        // Setup Toolbar
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu("Speed");
+        menu.setMnemonic(KeyEvent.VK_S);
+        JMenuItem menuItem = new JMenuItem("x0.25");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                speed = 800;
+            }
+        });
+        menu.add(menuItem);
+        menuItem = new JMenuItem("x1");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                speed = 200;
+            }
+        });
+        menu.add(menuItem);
+        menuItem = new JMenuItem("x2");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                speed = 100;
+            }
+        });
+        menu.add(menuItem);
+        menuItem = new JMenuItem("x8");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                speed = 25;
+            }
+        });
+        menu.add(menuItem);
+        menuBar.add(menu);
+        frame.setJMenuBar(menuBar);
+        
+        
+
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -72,7 +117,7 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
 
         try{ 
             while (true) {
-                Thread.sleep(100);
+                Thread.sleep(speed);
                 if (!paused) {
                     step();
                 }

@@ -10,12 +10,15 @@ import java.util.ArrayList;
 import java.lang.Thread;
 import javax.swing.*;
 import java.awt.event.*;
+import java.awt.Point;
 
 public class GraphicBoard implements DisplayBoard, KeyListener {
     protected int width;
     protected int height;
     protected Boolean paused;
     protected int speed;
+    protected Point corner;
+    protected Timer resizeTimer;
     protected ArrayList<ArrayList<GraphicCell>> cells;
 
     public GraphicBoard() {
@@ -47,21 +50,50 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
 
         frame.setLayout(new GridLayout(height, width));
         frame.addKeyListener(this);
+        this.corner = frame.getLocation();
+        frame.setResizable(true);
         frame.getRootPane().registerKeyboardAction(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 paused = !paused;
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        /*this.resizeTimer = new Timer(2000, new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+
+            }
+        });*/
+        frame.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+                /*if (resizeTimer == null) {
+                    resizeTimer = new Timer(1000, new ActionListener() {
+                        @Override
+                        public void actionPerformed(final ActionEvent e) {
+                            if (e.getSource() == resizeTimer) {
+                                resizeTimer.stop();
+                                resizeTimer = null;
+                                resize(frame);
+                            }
+                        }
+                    });
+                    resizeTimer.start();
+                } else {
+                    resizeTimer.restart();
+                }*/
+                resize(frame);
+            }
+        });
         //frame.setBackground(Color.WHITE);
         //frame.setForeground(Color.WHITE);
         //frame.setUndecorated(false);
         try {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
             frame.setOpacity(0.8f);
         } catch (Exception e) {
+            System.out.print("Transpareny Error: ");
             System.out.println(e);
         }
-        System.setProperty("apple.laf.useScreenMenuBar", "true");
 
         // Setup Toolbar
         JMenuBar menuBar = new JMenuBar();
@@ -102,8 +134,6 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         menuBar.add(menu);
         frame.setJMenuBar(menuBar);
         
-        
-
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -153,6 +183,51 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         for (int i = 0; i < changes.size(); i++) {
             toggleState(changes.get(i).i, changes.get(i).j);
         }
+    }
+
+    private void resize(JFrame frame) {
+        //frame.setResizable(false);
+        int newHeight = (int) (frame.getSize().getHeight() / 15);
+        int newWidth = (int) (frame.getSize().getWidth() / 15);
+        height = cells.size();
+        width = cells.get(0).size();
+        if (newHeight == height && newWidth == width) {
+            return;
+        }
+        Point newCorner = frame.getLocation();
+        for (int i = height; i < newHeight; i++) {
+            cells.add((newCorner.getY() == corner.getY()) ? i : i-height, new ArrayList<GraphicCell>());
+            for (int j = 0; j < width; j++) {
+                cells.get((newCorner.getY() == corner.getY()) ? i : i-height)
+                    .add(new GraphicCell());
+            }
+        }
+        for (int i = newHeight; i < height; i++) {
+            cells.remove((newCorner.getY() == corner.getY()) ? i : i-newHeight);
+        }
+        for (int i = 0; i < height; i++) {
+            for (int j = width; j < newWidth; j++) {
+                cells.get(i).add((newCorner.getX() == corner.getX()) ? j : j-width, new GraphicCell());
+            }
+            for (int j = newWidth; j < width; j++) {
+                System.out.println("Removing " + newWidth + "-" + width);
+                cells.get(i).remove((newCorner.getX() == corner.getX()) ? j : j-newWidth);
+            }
+        }
+        height = (int) newHeight;
+        width = (int) newWidth;
+        corner = newCorner;
+
+        try {
+            frame.setLayout(new GridLayout(height, width));
+            frame.getContentPane().removeAll();
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    frame.add((cells.get(i).get(j)).button);
+                }
+            }
+        } catch (Exception e) {}
+        //frame.setResizable(true);
     }
 
     public void toggleState(int i, int j) {

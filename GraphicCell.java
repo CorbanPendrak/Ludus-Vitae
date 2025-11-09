@@ -45,13 +45,12 @@ public class GraphicCell extends Cell implements DisplayCell, ActionListener {
     public void display(JFrame frame) {
         frame.add(button);
     }
-    
+
     public int displayOptions() {
         return display.length;
     }
 
     public void actionPerformed(ActionEvent e) {
-        System.out.println(e.getID());
         toggleState();
     }
 }

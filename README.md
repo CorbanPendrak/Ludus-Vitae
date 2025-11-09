@@ -14,7 +14,7 @@ This is a Java application for Conway's Game of Life. It is currently in Beta an
   - [x] Board
 - [ ] Create options
   - [x] Looping
-  - [ ] Resize board with application
+  - [x] Resize board with application
   - [ ] Load designs
   - [ ] Save configurations
   - [ ] Speed

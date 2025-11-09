@@ -18,7 +18,7 @@ This is a Java application for Conway's Game of Life. It is currently in Beta an
   - [ ] Load designs
   - [ ] Save configurations
   - [ ] Speed
-  - [ ] Pausing
+  - [x] Pausing
   - [ ] Keyboard controls
   - [ ] Editing
 - [ ] Print version

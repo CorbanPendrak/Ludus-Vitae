@@ -6,10 +6,11 @@
  */
 
 import javax.swing.*;
+import java.awt.event.*;
 import java.awt.Color;
 import java.awt.Dimension;
 
-public class GraphicCell extends Cell implements DisplayCell {
+public class GraphicCell extends Cell implements DisplayCell, ActionListener {
     public static Color[] display = {Color.WHITE, Color.BLACK};
     public JButton button;
 
@@ -24,6 +25,8 @@ public class GraphicCell extends Cell implements DisplayCell {
         button.setPreferredSize(new Dimension(15, 15));
         button.setOpaque(true);
         button.setBorderPainted(false);
+        button.addActionListener(this);
+        //button.removeKeyListener(button.getKeyListeners());
         
         setState(state);
     }
@@ -34,12 +37,21 @@ public class GraphicCell extends Cell implements DisplayCell {
         button.setBackground(display[state]);
     }
 
+    public void toggleState() {
+        setState((state + 1) % display.length);
+    }
+
     public void display() {}
     public void display(JFrame frame) {
         frame.add(button);
     }
-
+    
     public int displayOptions() {
         return display.length;
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        System.out.println(e.getID());
+        toggleState();
     }
 }

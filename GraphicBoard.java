@@ -9,10 +9,12 @@ import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.lang.Thread;
 import javax.swing.*;
+import java.awt.event.*;
 
-public class GraphicBoard implements DisplayBoard {
+public class GraphicBoard implements DisplayBoard, KeyListener {
     protected int width;
     protected int height;
+    protected Boolean paused;
     protected ArrayList<ArrayList<GraphicCell>> cells;
 
     public GraphicBoard() {
@@ -22,6 +24,7 @@ public class GraphicBoard implements DisplayBoard {
     public GraphicBoard(int height, int width) {
         this.width = width;
         this.height = height;
+        this.paused = false;
 
         cells = new ArrayList<ArrayList<GraphicCell>>();
         for (int i = 0; i < height; i++) {
@@ -41,6 +44,21 @@ public class GraphicBoard implements DisplayBoard {
         }
 
         frame.setLayout(new GridLayout(height, width));
+        frame.addKeyListener(this);
+        frame.getRootPane().registerKeyboardAction(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                paused = !paused;
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        //frame.setBackground(Color.WHITE);
+        //frame.setForeground(Color.WHITE);
+        //frame.setUndecorated(false);
+        try {
+            frame.setOpacity(0.8f);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
@@ -55,7 +73,9 @@ public class GraphicBoard implements DisplayBoard {
         try{ 
             while (true) {
                 Thread.sleep(100);
-                step();
+                if (!paused) {
+                    step();
+                }
             }
         }
         catch (Exception e) {
@@ -156,5 +176,19 @@ public class GraphicBoard implements DisplayBoard {
         public int i;
         public int j;
         public Pair(int i, int j) { this.i = i; this.j = j; }
+    }
+
+    public void keyTyped(KeyEvent e) {
+        System.out.println(e.getKeyCode());
+
+    }
+
+    public void keyPressed(KeyEvent e) {
+        System.out.println(e.getKeyCode());
+    }
+
+    public void keyReleased(KeyEvent e) {
+        System.out.println(e.getKeyCode());
+
     }
 }

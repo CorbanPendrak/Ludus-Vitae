@@ -6,30 +6,35 @@
  */
 
 
-public class PrintCell extends Cell {
+public class PrintCell extends Cell implements DisplayCell {
     // Attributes
     //private static String[] display = {"▢", "▣"}; 
-    private static String[] display = {" ", "▣"}; //█"};
+    public static String[] display = {" ", "▣"}; //█"};
 
     // Constructors
+
     public PrintCell() {
         setState(0);
     }
 
     public PrintCell(int state) {
-        if (state > display.length) {
-            state = display.length;
+        if (state >= displayOptions()) {
+            state = displayOptions() - 1;
         }
 
         setState(state);
     }
 
     // Methods
-    public String display() {
-        return display[getState()];
+    public void display() {
+        System.out.print(this);
     }
 
     public String toString() {
-        return display();
+        return display[getState()];
+    }
+
+    public int displayOptions() {
+        return display.length;
     }
 }

@@ -6,14 +6,14 @@ This is a Java application for Conway's Game of Life. It is currently in Beta an
   - [x] Cell
   - [x] PrintCell
   - [x] PrintBoard
-  - [ ] GraphicCell
-  - [ ] GraphicBoard
+  - [x] GraphicCell
+  - [x] GraphicBoard
   - [ ] Options
-- [ ] Create interfaces
-  - [ ] Cell
-  - [ ] Board
+- [x] Create interfaces
+  - [x] Cell
+  - [x] Board
 - [ ] Create options
-  - [ ] Looping
+  - [x] Looping
   - [ ] Resize board with application
   - [ ] Load designs
   - [ ] Save configurations
@@ -25,7 +25,7 @@ This is a Java application for Conway's Game of Life. It is currently in Beta an
   - [x] Viewing
   - [ ] Input
 - [ ] Graphic version
-  - [ ] Viewing
+  - [x] Viewing
   - [ ] Input
 - [ ] Styling
   - [ ] Rounded corners

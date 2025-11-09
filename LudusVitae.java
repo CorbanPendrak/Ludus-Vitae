@@ -5,31 +5,18 @@
  * Purpose: Main class for the Ludus Vitae application.
  */
 
- import java.lang.Thread;
-
 public class LudusVitae {
     public static void main(String[] args) {
         System.out.println("Welcome to Ludus Vitae!\n");
 
-        PrintBoard board = new PrintBoard(20, 60);
+        DisplayBoard board = new GraphicBoard();
 
-        board.cells.get(5).get(10).setState(1);
-        board.cells.get(6).get(11).setState(1);
-        board.cells.get(7).get(11).setState(1);
-        board.cells.get(7).get(10).setState(1);
-        board.cells.get(7).get(9).setState(1);
+        board.toggleState(5, 10);
+        board.toggleState(6, 11);
+        board.toggleState(7, 11);
+        board.toggleState(7, 10);
+        board.toggleState(7, 9);
 
-        try { 
-            while (true) {
-                System.out.print(board);
-                board.step();
-                Thread.sleep(100);
-                System.out.print(board.clearDisplay());
-            }
-        }
-        catch (Exception e) {
-            
-        }
-        
+        board.display();
     }
 }

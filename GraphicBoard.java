@@ -66,10 +66,12 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         });*/
         frame.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                /*if (resizeTimer == null) {
+                /* 
+                if (resizeTimer == null) {
                     resizeTimer = new Timer(1000, new ActionListener() {
                         @Override
                         public void actionPerformed(final ActionEvent e) {
+                            System.out.println(e.getSource() + " " + resizeTimer);
                             if (e.getSource() == resizeTimer) {
                                 resizeTimer.stop();
                                 resizeTimer = null;
@@ -132,6 +134,79 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         });
         menu.add(menuItem);
         menuBar.add(menu);
+        menu = new JMenu("Size");
+        menuItem = new JMenuItem("Small");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                int newSize = 5;
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        cells.get(i).get(j).changeSize(newSize);
+                    }
+                }
+                try {
+                    frame.setLayout(new GridLayout(height, width));
+                    frame.getContentPane().removeAll();
+                    for (int i = 0; i < height; i++) {
+                        for (int j = 0; j < width; j++) {
+                            frame.add((cells.get(i).get(j)).button);
+                        }
+                    }
+                    frame.pack();
+                } catch (Exception ex) {}
+            }
+        });
+        menu.add(menuItem);
+        menuItem = new JMenuItem("Medium");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                int newSize = 15;
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        cells.get(i).get(j).changeSize(newSize);
+                    }
+                }
+                
+                try {
+                    frame.setLayout(new GridLayout(height, width));
+                    frame.getContentPane().removeAll();
+                    for (int i = 0; i < height; i++) {
+                        for (int j = 0; j < width; j++) {
+                            frame.add((cells.get(i).get(j)).button);
+                        }
+                    }
+                    frame.pack();
+                } catch (Exception ex) {}
+                
+            }
+        });
+        menu.add(menuItem);
+        menuItem = new JMenuItem("Large");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                int newSize = 25;
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        cells.get(i).get(j).changeSize(newSize);
+                    }
+                }
+                try {
+                    frame.setLayout(new GridLayout(height, width));
+                    frame.getContentPane().removeAll();
+                    for (int i = 0; i < height; i++) {
+                        for (int j = 0; j < width; j++) {
+                            frame.add((cells.get(i).get(j)).button);
+                        }
+                    }
+                    frame.pack();
+                } catch (Exception ex) {}
+            }
+        });
+        menu.add(menuItem);
+        menuBar.add(menu);
         frame.setJMenuBar(menuBar);
         
 
@@ -187,8 +262,9 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
 
     private void resize(JFrame frame) {
         //frame.setResizable(false);
-        int newHeight = (int) (frame.getSize().getHeight() / 15);
-        int newWidth = (int) (frame.getSize().getWidth() / 15);
+        System.out.println(GraphicCell.size);
+        int newHeight = (int) (frame.getSize().getHeight() / GraphicCell.size);
+        int newWidth = (int) (frame.getSize().getWidth() / GraphicCell.size);
         height = cells.size();
         width = cells.get(0).size();
         if (newHeight == height && newWidth == width) {
@@ -203,15 +279,18 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
             }
         }
         for (int i = newHeight; i < height; i++) {
-            cells.remove((newCorner.getY() == corner.getY()) ? i : i-newHeight);
+            try {
+                cells.remove((newCorner.getY() == corner.getY()) ? i : i-newHeight);
+            } catch (Exception e) {}
         }
-        for (int i = 0; i < height; i++) {
+        for (int i = 0; i < newHeight; i++) {
             for (int j = width; j < newWidth; j++) {
                 cells.get(i).add((newCorner.getX() == corner.getX()) ? j : j-width, new GraphicCell());
             }
             for (int j = newWidth; j < width; j++) {
-                System.out.println("Removing " + newWidth + "-" + width);
-                cells.get(i).remove((newCorner.getX() == corner.getX()) ? j : j-newWidth);
+                try {
+                    cells.get(i).remove((newCorner.getX() == corner.getX()) ? j : j-newWidth);
+                } catch (Exception e) {}
             }
         }
         height = (int) newHeight;
@@ -226,7 +305,8 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
                     frame.add((cells.get(i).get(j)).button);
                 }
             }
-        } catch (Exception e) {}
+            //frame.pack();
+        } catch (Exception e) { System.out.println(e); }
         //frame.setResizable(true);
     }
 

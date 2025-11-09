@@ -13,16 +13,21 @@ import java.awt.Dimension;
 public class GraphicCell extends Cell implements DisplayCell, ActionListener {
     public static Color[] display = {Color.WHITE, Color.BLACK};
     public JButton button;
+    public static int size;
 
     public GraphicCell() { this(0); }
     public GraphicCell(int state) {
         if (state >= display.length) {
             state = display.length - 1;
         }
+        if (size == 0) {
+            size = 15;
+        }
 
         this.button = new JButton();
         this.button.setBackground(display[state]);
-        button.setPreferredSize(new Dimension(15, 15));
+        button.setPreferredSize(new Dimension(size, size));
+        button.setSize(new Dimension(size, size));
         button.setOpaque(true);
         button.setBorderPainted(false);
         button.addActionListener(this);
@@ -52,5 +57,11 @@ public class GraphicCell extends Cell implements DisplayCell, ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         toggleState();
+    }
+
+    public void changeSize(int width) {
+        size = width;
+        button.setSize(new Dimension(size, size));
+        button.setPreferredSize(new Dimension(size, size));
     }
 }

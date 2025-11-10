@@ -2,33 +2,31 @@
 This is a Java application for Conway's Game of Life. It is currently in Beta and rapid development. Please check back in soon for an updated README with the full project description.
 
 ## Roadmap
-- [ ] Create classes
+- [x] Create classes
   - [x] Cell
   - [x] PrintCell
   - [x] PrintBoard
   - [x] GraphicCell
   - [x] GraphicBoard
-  - [ ] Options
+  - [x] Options
 - [x] Create interfaces
   - [x] Cell
   - [x] Board
-- [ ] Create options
+- [x] Create options
   - [x] Looping
   - [x] Resize board with application
-  - [ ] Load designs
-  - [ ] Save configurations
-  - [ ] Speed
+  - [x] Load designs
+  - [x] Save configurations
+  - [x] Speed
   - [x] Pausing
-  - [ ] Keyboard controls
-  - [ ] Editing
-- [ ] Print version
+  - [x] Keyboard controls
+  - [x] Editing
+- [x] Print version
   - [x] Viewing
-  - [ ] Input
-- [ ] Graphic version
+- [x] Graphic version
   - [x] Viewing
-  - [ ] Input
+  - [x] Input
 - [ ] Styling
-  - [ ] Rounded corners
   - [ ] Color modes
   - [ ] Color based on # neigbors
   - [ ] Color based on time

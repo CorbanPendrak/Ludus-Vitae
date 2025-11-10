@@ -5,17 +5,20 @@
  * Purpose: Display board for GUI
  */
 
+import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.lang.Thread;
 import javax.swing.*;
 import java.awt.event.*;
+import java.io.*;
 import java.awt.Point;
 
-public class GraphicBoard implements DisplayBoard, KeyListener {
+public class GraphicBoard implements DisplayBoard{
     protected int width;
     protected int height;
     protected Boolean paused;
+    protected Boolean resizing;
     protected int speed;
     protected Point corner;
     protected Timer resizeTimer;
@@ -29,6 +32,7 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         this.width = width;
         this.height = height;
         this.paused = false;
+        this.resizing = false;
         this.speed = 100;
 
         cells = new ArrayList<ArrayList<GraphicCell>>();
@@ -49,7 +53,6 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         }
 
         frame.setLayout(new GridLayout(height, width));
-        frame.addKeyListener(this);
         this.corner = frame.getLocation();
         frame.setResizable(true);
         frame.getRootPane().registerKeyboardAction(new ActionListener() {
@@ -99,9 +102,31 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
 
         // Setup Toolbar
         JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu("Speed");
+        JMenu menu;
+        JMenuItem menuItem;
+
+        menu = new JMenu("File");
+        menuItem = new JMenuItem("Save");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                save(frame);
+            }
+        });
+        menu.add(menuItem);
+        menuItem = new JMenuItem("Load");
+        menuItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                load(frame);
+            }
+        });
+        menu.add(menuItem);
+        menuBar.add(menu);
+
+        menu = new JMenu("Speed");
         menu.setMnemonic(KeyEvent.VK_S);
-        JMenuItem menuItem = new JMenuItem("x0.25");
+        menuItem = new JMenuItem("x0.25");
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -134,6 +159,7 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         });
         menu.add(menuItem);
         menuBar.add(menu);
+
         menu = new JMenu("Size");
         menuItem = new JMenuItem("Small");
         menuItem.addActionListener(new ActionListener() {
@@ -207,6 +233,7 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         });
         menu.add(menuItem);
         menuBar.add(menu);
+
         frame.setJMenuBar(menuBar);
         
 
@@ -261,10 +288,14 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
     }
 
     private void resize(JFrame frame) {
+        if (resizing) {
+            return;
+        }
+        //resizing = true;
         //frame.setResizable(false);
-        System.out.println(GraphicCell.size);
         int newHeight = (int) (frame.getSize().getHeight() / GraphicCell.size);
         int newWidth = (int) (frame.getSize().getWidth() / GraphicCell.size);
+        //System.out.println("(" + height + ", " + width + ")");
         height = cells.size();
         width = cells.get(0).size();
         if (newHeight == height && newWidth == width) {
@@ -307,6 +338,7 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
             }
             //frame.pack();
         } catch (Exception e) { System.out.println(e); }
+        //resizing = false;
         //frame.setResizable(true);
     }
 
@@ -378,17 +410,84 @@ public class GraphicBoard implements DisplayBoard, KeyListener {
         public Pair(int i, int j) { this.i = i; this.j = j; }
     }
 
-    public void keyTyped(KeyEvent e) {
-        System.out.println(e.getKeyCode());
+    public void save(JFrame frame) {
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = fileChooser.getSelectedFile();
+                System.out.println("Saving to " + file.getAbsolutePath());
+                OutputStream stream = new FileOutputStream(file.getAbsolutePath() + ".bin");
+                stream.write(height);
+                stream.write(width);
+                //System.out.println("Height: " + height + "; Width: " + width);
 
+                byte[] bytes = new byte[(height*width)/ 8];
+                byte curr = 0x0;
+                int count = 0;
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        curr <<= 1;
+                        curr |= cells.get(i).get(j).state;
+                        //System.out.print(cells.get(i).get(j).state);
+                        count++;
+                        if (count >= 8) {
+                            bytes[(width*i + j)/8] = curr;
+                            curr = 0x0;
+                            count = 0;
+                        }
+                    }
+                    //System.out.println();
+                }
+                if (curr != 0) {
+                    curr <<= 8 - count;
+                    bytes[bytes.length - 1] = curr;
+                }
+                stream.write(bytes);
+
+                stream.close();
+                
+            } catch (Exception e) { System.out.println(e); }
+        }
     }
 
-    public void keyPressed(KeyEvent e) {
-        System.out.println(e.getKeyCode());
-    }
+    public void load(JFrame frame) {
+        resizing = true;
+        JFileChooser fileChooser = new JFileChooser();
+        if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
+            try {
+                File file = fileChooser.getSelectedFile();
+                InputStream stream = new FileInputStream(file.getAbsolutePath());
+                height = stream.read();
+                width = stream.read();
+                //System.out.println("Height: " + height + "; Width: " + width);
 
-    public void keyReleased(KeyEvent e) {
-        System.out.println(e.getKeyCode());
+                byte[] data = stream.readAllBytes();
+                byte curr;
+                
+                frame.getContentPane().removeAll();
+                frame.setSize(new Dimension(width*GraphicCell.size + 1, height*GraphicCell.size + 1));
+                frame.setLayout(new GridLayout(height, width));
+                cells = new ArrayList<ArrayList<GraphicCell>>();
+                for (int i = 0; i < data.length; i++) {
+                    curr = data[i];
+                    for (int j = 0; j < 8; j++) {
+                        int pos = i*8 +j;
+                        if (pos % width == 0) {
+                            cells.add(new ArrayList<GraphicCell>());
+                            //System.out.println();
+                        }
+                        GraphicCell newCell = new GraphicCell((curr & 0x80) == 128 ? 1 : 0);
+                        //System.out.print((curr & 0x80) == 128 ? 1 : 0);
+                        cells.get(pos / width).add(newCell);
+                        frame.add(newCell.button);
+                        curr <<= 1;
+                    }
+                }
+                frame.pack();
 
+                stream.close();
+            } catch (Exception e) { System.out.println(e); }
+        }
+        resizing = false;
     }
 }

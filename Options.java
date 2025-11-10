@@ -61,6 +61,21 @@ public class Options extends JToolBar {
             }
         });
         menu.add(menuItem);
+        menu.addSeparator();
+        Examples examples = new Examples(board);
+        JMenu exampleMenu = new JMenu("Examples");
+        for (int i = 0; i < Examples.exampleNames.length; i++) {
+            int index = i;
+            menuItem = new JMenuItem(Examples.exampleNames[i]);
+            menuItem.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(final ActionEvent e) {
+                    examples.runExample(index);
+                }
+            });
+            exampleMenu.add(menuItem);
+        }
+        menu.add(exampleMenu);
         menuBar.add(menu);
 
         menu = new JMenu("Speed");

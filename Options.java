@@ -23,8 +23,6 @@ public class Options extends JToolBar {
     public GraphicBoard board;
     //public JCheckBoxMenuItem pausedMenuItem;
     public JFrame frame;
-    protected int width;
-    protected int height;
 
     public Options(GraphicBoard board) {
         this.paused = false;
@@ -48,7 +46,7 @@ public class Options extends JToolBar {
         menuItem.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                save(frame);
+                saveBinary(frame);
             }
         });
         menu.add(menuItem);
@@ -57,7 +55,7 @@ public class Options extends JToolBar {
             @Override
             public void actionPerformed(final ActionEvent e) {
                 paused = true;
-                load(frame);
+                loadBinary(frame);
             }
         });
         menu.add(menuItem);
@@ -246,16 +244,21 @@ public class Options extends JToolBar {
         frame.setJMenuBar(menuBar);
     }
 
-    public void save(JFrame frame) {
+    public void saveBinary(JFrame frame) {
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = fileChooser.getSelectedFile();
-                System.out.println("Saving to " + file.getAbsolutePath());
-                OutputStream stream = new FileOutputStream(file.getAbsolutePath() + ".bin");
+                String fileName = file.getAbsolutePath();
+                if (!fileName.endsWith(".bin")) {
+                    fileName += ".bin";
+                }
+                OutputStream stream = new FileOutputStream(fileName);
+                int height = board.cells.size();
+                int width = board.cells.get(0).size();
                 stream.write(height);
                 stream.write(width);
-                //System.out.println("Height: " + height + "; Width: " + width);
+                System.out.println("Height: " + height + "; Width: " + width);
 
                 byte[] bytes = new byte[(height*width)/ 8];
                 byte curr = 0x0;
@@ -286,13 +289,15 @@ public class Options extends JToolBar {
         }
     }
 
-    public void load(JFrame frame) {
+    public void loadBinary(JFrame frame) {
         resizing = true;
         JFileChooser fileChooser = new JFileChooser();
         if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
             try {
                 File file = fileChooser.getSelectedFile();
                 InputStream stream = new FileInputStream(file.getAbsolutePath());
+                int height = board.cells.size();
+                int width = board.cells.get(0).size();
                 height = stream.read();
                 width = stream.read();
                 //System.out.println("Height: " + height + "; Width: " + width);

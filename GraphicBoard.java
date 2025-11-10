@@ -5,24 +5,20 @@
  * Purpose: Display board for GUI
  */
 
-import java.awt.Dimension;
+import java.awt.Color;
 import java.awt.GridLayout;
 import java.util.ArrayList;
 import java.lang.Thread;
 import javax.swing.*;
 import java.awt.event.*;
-import java.io.*;
 import java.awt.Point;
 
 public class GraphicBoard implements DisplayBoard{
     protected int width;
     protected int height;
-    protected Boolean paused;
-    protected Boolean resizing;
-    protected int speed;
-    protected Point corner;
-    protected Timer resizeTimer;
-    protected ArrayList<ArrayList<GraphicCell>> cells;
+    public ArrayList<ArrayList<GraphicCell>> cells;
+    protected Options options;
+    public JFrame frame;
 
     public GraphicBoard() {
         this(20, 60);
@@ -31,9 +27,10 @@ public class GraphicBoard implements DisplayBoard{
     public GraphicBoard(int height, int width) {
         this.width = width;
         this.height = height;
-        this.paused = false;
-        this.resizing = false;
-        this.speed = 100;
+
+        // Default theme
+        GraphicCell.display[0] = new Color(15, 15, 15);
+        GraphicCell.display[1] = new Color(17, 255, 5);
 
         cells = new ArrayList<ArrayList<GraphicCell>>();
         for (int i = 0; i < height; i++) {
@@ -45,7 +42,7 @@ public class GraphicBoard implements DisplayBoard{
     }
 
     public void display() {
-        JFrame frame = new JFrame("Ludus Vitae");
+        frame = new JFrame("Ludus Vitae");
         try{
             UIManager.setLookAndFeel(UIManager.getCrossPlatformLookAndFeelClassName());
         }catch(Exception e){
@@ -53,14 +50,33 @@ public class GraphicBoard implements DisplayBoard{
         }
 
         frame.setLayout(new GridLayout(height, width));
-        this.corner = frame.getLocation();
         frame.setResizable(true);
+        frame.getContentPane().setBackground(GraphicCell.display[0]);
+        frame.getContentPane().setForeground(GraphicCell.display[0]);
         frame.getRootPane().registerKeyboardAction(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
-                paused = !paused;
+                options.togglePaused();
             }
         }, KeyStroke.getKeyStroke(KeyEvent.VK_P, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        frame.getRootPane().registerKeyboardAction(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                options.setPaused(true);
+                resize(frame);
+                frame.pack();
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_R, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
+        frame.getRootPane().registerKeyboardAction(new ActionListener() {
+            @Override
+            public void actionPerformed(final ActionEvent e) {
+                for (int i = 0; i < height; i++) {
+                    for (int j = 0; j < width; j++) {
+                        cells.get(i).get(j).setState(0);
+                    }
+                }
+            }
+        }, KeyStroke.getKeyStroke(KeyEvent.VK_C, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         /*this.resizeTimer = new Timer(2000, new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -86,7 +102,7 @@ public class GraphicBoard implements DisplayBoard{
                 } else {
                     resizeTimer.restart();
                 }*/
-                resize(frame);
+                //resize(frame);
             }
         });
         //frame.setBackground(Color.WHITE);
@@ -100,141 +116,8 @@ public class GraphicBoard implements DisplayBoard{
             System.out.println(e);
         }
 
-        // Setup Toolbar
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu;
-        JMenuItem menuItem;
 
-        menu = new JMenu("File");
-        menuItem = new JMenuItem("Save");
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                save(frame);
-            }
-        });
-        menu.add(menuItem);
-        menuItem = new JMenuItem("Load");
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                load(frame);
-            }
-        });
-        menu.add(menuItem);
-        menuBar.add(menu);
-
-        menu = new JMenu("Speed");
-        menu.setMnemonic(KeyEvent.VK_S);
-        menuItem = new JMenuItem("x0.25");
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                speed = 800;
-            }
-        });
-        menu.add(menuItem);
-        menuItem = new JMenuItem("x1");
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                speed = 200;
-            }
-        });
-        menu.add(menuItem);
-        menuItem = new JMenuItem("x2");
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                speed = 100;
-            }
-        });
-        menu.add(menuItem);
-        menuItem = new JMenuItem("x8");
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                speed = 25;
-            }
-        });
-        menu.add(menuItem);
-        menuBar.add(menu);
-
-        menu = new JMenu("Size");
-        menuItem = new JMenuItem("Small");
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                int newSize = 5;
-                for (int i = 0; i < height; i++) {
-                    for (int j = 0; j < width; j++) {
-                        cells.get(i).get(j).changeSize(newSize);
-                    }
-                }
-                try {
-                    frame.setLayout(new GridLayout(height, width));
-                    frame.getContentPane().removeAll();
-                    for (int i = 0; i < height; i++) {
-                        for (int j = 0; j < width; j++) {
-                            frame.add((cells.get(i).get(j)).button);
-                        }
-                    }
-                    frame.pack();
-                } catch (Exception ex) {}
-            }
-        });
-        menu.add(menuItem);
-        menuItem = new JMenuItem("Medium");
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                int newSize = 15;
-                for (int i = 0; i < height; i++) {
-                    for (int j = 0; j < width; j++) {
-                        cells.get(i).get(j).changeSize(newSize);
-                    }
-                }
-                
-                try {
-                    frame.setLayout(new GridLayout(height, width));
-                    frame.getContentPane().removeAll();
-                    for (int i = 0; i < height; i++) {
-                        for (int j = 0; j < width; j++) {
-                            frame.add((cells.get(i).get(j)).button);
-                        }
-                    }
-                    frame.pack();
-                } catch (Exception ex) {}
-                
-            }
-        });
-        menu.add(menuItem);
-        menuItem = new JMenuItem("Large");
-        menuItem.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                int newSize = 25;
-                for (int i = 0; i < height; i++) {
-                    for (int j = 0; j < width; j++) {
-                        cells.get(i).get(j).changeSize(newSize);
-                    }
-                }
-                try {
-                    frame.setLayout(new GridLayout(height, width));
-                    frame.getContentPane().removeAll();
-                    for (int i = 0; i < height; i++) {
-                        for (int j = 0; j < width; j++) {
-                            frame.add((cells.get(i).get(j)).button);
-                        }
-                    }
-                    frame.pack();
-                } catch (Exception ex) {}
-            }
-        });
-        menu.add(menuItem);
-        menuBar.add(menu);
-
-        frame.setJMenuBar(menuBar);
+        this.options = new Options(this);
         
 
         for (int i = 0; i < height; i++) {
@@ -249,8 +132,8 @@ public class GraphicBoard implements DisplayBoard{
 
         try{ 
             while (true) {
-                Thread.sleep(speed);
-                if (!paused) {
+                Thread.sleep(options.speed);
+                if (!options.paused) {
                     step();
                 }
             }
@@ -266,7 +149,7 @@ public class GraphicBoard implements DisplayBoard{
 
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
-                int neighbors = countNeighborsWrap(i, j);
+                int neighbors = options.wrapping ? countNeighborsWrap(i, j) : countNeighbors(i, j);
 
                 if (cells.get(i).get(j).getState() == 0) {
                     // Cell is dead
@@ -287,8 +170,8 @@ public class GraphicBoard implements DisplayBoard{
         }
     }
 
-    private void resize(JFrame frame) {
-        if (resizing) {
+    public void resize(JFrame frame) {
+        if (options.resizing) {
             return;
         }
         //resizing = true;
@@ -303,30 +186,30 @@ public class GraphicBoard implements DisplayBoard{
         }
         Point newCorner = frame.getLocation();
         for (int i = height; i < newHeight; i++) {
-            cells.add((newCorner.getY() == corner.getY()) ? i : i-height, new ArrayList<GraphicCell>());
+            cells.add((newCorner.getY() == options.corner.getY()) ? i : i-height, new ArrayList<GraphicCell>());
             for (int j = 0; j < width; j++) {
-                cells.get((newCorner.getY() == corner.getY()) ? i : i-height)
+                cells.get((newCorner.getY() == options.corner.getY()) ? i : i-height)
                     .add(new GraphicCell());
             }
         }
         for (int i = newHeight; i < height; i++) {
             try {
-                cells.remove((newCorner.getY() == corner.getY()) ? i : i-newHeight);
+                cells.remove((newCorner.getY() == options.corner.getY()) ? i : i-newHeight);
             } catch (Exception e) {}
         }
         for (int i = 0; i < newHeight; i++) {
             for (int j = width; j < newWidth; j++) {
-                cells.get(i).add((newCorner.getX() == corner.getX()) ? j : j-width, new GraphicCell());
+                cells.get(i).add((newCorner.getX() == options.corner.getX()) ? j : j-width, new GraphicCell());
             }
             for (int j = newWidth; j < width; j++) {
                 try {
-                    cells.get(i).remove((newCorner.getX() == corner.getX()) ? j : j-newWidth);
+                    cells.get(i).remove((newCorner.getX() == options.corner.getX()) ? j : j-newWidth);
                 } catch (Exception e) {}
             }
         }
         height = (int) newHeight;
         width = (int) newWidth;
-        corner = newCorner;
+        options.corner = newCorner;
 
         try {
             frame.setLayout(new GridLayout(height, width));
@@ -345,6 +228,33 @@ public class GraphicBoard implements DisplayBoard{
     public void toggleState(int i, int j) {
         Cell cell = cells.get(i).get(j);
         setState(i, j, (cell.getState() + 1) % cell.displayOptions());
+    }
+
+    public void toggleAll() {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                cells.get(i).get(j).toggleState();
+                cells.get(i).get(j).toggleState();
+            }
+        }
+    }
+
+    public void changeSize(int newSize) {
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                cells.get(i).get(j).changeSize(newSize);
+            }
+        }
+        try {
+            frame.setLayout(new GridLayout(height, width));
+            frame.getContentPane().removeAll();
+            for (int i = 0; i < height; i++) {
+                for (int j = 0; j < width; j++) {
+                    frame.add((cells.get(i).get(j)).button);
+                }
+            }
+            frame.pack();
+        } catch (Exception ex) {}
     }
 
     public void setState(int i, int j, int state) {
@@ -410,84 +320,9 @@ public class GraphicBoard implements DisplayBoard{
         public Pair(int i, int j) { this.i = i; this.j = j; }
     }
 
-    public void save(JFrame frame) {
-        JFileChooser fileChooser = new JFileChooser();
-        if (fileChooser.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION) {
-            try {
-                File file = fileChooser.getSelectedFile();
-                System.out.println("Saving to " + file.getAbsolutePath());
-                OutputStream stream = new FileOutputStream(file.getAbsolutePath() + ".bin");
-                stream.write(height);
-                stream.write(width);
-                //System.out.println("Height: " + height + "; Width: " + width);
-
-                byte[] bytes = new byte[(height*width)/ 8];
-                byte curr = 0x0;
-                int count = 0;
-                for (int i = 0; i < height; i++) {
-                    for (int j = 0; j < width; j++) {
-                        curr <<= 1;
-                        curr |= cells.get(i).get(j).state;
-                        //System.out.print(cells.get(i).get(j).state);
-                        count++;
-                        if (count >= 8) {
-                            bytes[(width*i + j)/8] = curr;
-                            curr = 0x0;
-                            count = 0;
-                        }
-                    }
-                    //System.out.println();
-                }
-                if (curr != 0) {
-                    curr <<= 8 - count;
-                    bytes[bytes.length - 1] = curr;
-                }
-                stream.write(bytes);
-
-                stream.close();
-                
-            } catch (Exception e) { System.out.println(e); }
-        }
-    }
-
-    public void load(JFrame frame) {
-        resizing = true;
-        JFileChooser fileChooser = new JFileChooser();
-        if (fileChooser.showOpenDialog(frame) == JFileChooser.APPROVE_OPTION) {
-            try {
-                File file = fileChooser.getSelectedFile();
-                InputStream stream = new FileInputStream(file.getAbsolutePath());
-                height = stream.read();
-                width = stream.read();
-                //System.out.println("Height: " + height + "; Width: " + width);
-
-                byte[] data = stream.readAllBytes();
-                byte curr;
-                
-                frame.getContentPane().removeAll();
-                frame.setSize(new Dimension(width*GraphicCell.size + 1, height*GraphicCell.size + 1));
-                frame.setLayout(new GridLayout(height, width));
-                cells = new ArrayList<ArrayList<GraphicCell>>();
-                for (int i = 0; i < data.length; i++) {
-                    curr = data[i];
-                    for (int j = 0; j < 8; j++) {
-                        int pos = i*8 +j;
-                        if (pos % width == 0) {
-                            cells.add(new ArrayList<GraphicCell>());
-                            //System.out.println();
-                        }
-                        GraphicCell newCell = new GraphicCell((curr & 0x80) == 128 ? 1 : 0);
-                        //System.out.print((curr & 0x80) == 128 ? 1 : 0);
-                        cells.get(pos / width).add(newCell);
-                        frame.add(newCell.button);
-                        curr <<= 1;
-                    }
-                }
-                frame.pack();
-
-                stream.close();
-            } catch (Exception e) { System.out.println(e); }
-        }
-        resizing = false;
+    public void setCells(ArrayList<ArrayList<GraphicCell>> cells) {
+        this.height = cells.size();
+        this.width = cells.get(0).size();
+        this.cells = cells;
     }
 }

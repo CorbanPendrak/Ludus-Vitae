@@ -1,3 +1,4 @@
+package src;
 /*
  * File: GraphicBoard.java
  * Author: Corban Pendrak

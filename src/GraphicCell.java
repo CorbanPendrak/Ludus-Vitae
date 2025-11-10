@@ -1,3 +1,4 @@
+package src;
 /*
  * File: GraphicCell.java
  * Author: Corban Pendrak

@@ -1,3 +1,4 @@
+package src;
 /*
  * File: PrintBoard.java
  * Author: Corban Pendrak

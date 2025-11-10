@@ -1,3 +1,4 @@
+package src;
 /*
  * File: Board.java
  * Author: Corban Pendrak

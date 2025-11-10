@@ -1,3 +1,4 @@
+package src;
 /*
  * File: DisplayBoard.java
  * Author: Corban Pendrak

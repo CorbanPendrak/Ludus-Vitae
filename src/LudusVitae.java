@@ -1,3 +1,4 @@
+package src;
 /*
  * File: LudusVitae.java
  * Author: Corban Pendrak

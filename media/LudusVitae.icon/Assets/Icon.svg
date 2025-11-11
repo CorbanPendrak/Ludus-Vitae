@@ -1,0 +1,112 @@
+<svg width="320" height="320" viewBox="0 0 320 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect y="16" width="32" height="32" fill="white"/>
+<rect y="48" width="32" height="32" fill="white"/>
+<rect y="80" width="32" height="32" fill="white"/>
+<rect y="112" width="32" height="32" fill="white"/>
+<rect y="144" width="32" height="32" fill="white"/>
+<rect y="176" width="32" height="32" fill="white"/>
+<rect y="208" width="32" height="32" fill="white"/>
+<rect y="240" width="32" height="32" fill="white"/>
+<rect y="272" width="32" height="32" fill="white"/>
+<path d="M0 304H32V320H16C7.16344 320 0 312.837 0 304V304Z" fill="white"/>
+<path d="M0 16C0 7.16344 7.16344 0 16 0H32V16H0V16Z" fill="white"/>
+<rect x="32" y="16" width="32" height="32" fill="white"/>
+<rect x="32" y="48" width="32" height="32" fill="white"/>
+<rect x="32" y="80" width="32" height="32" fill="white"/>
+<rect x="32" y="112" width="32" height="32" fill="black"/>
+<rect x="32" y="144" width="32" height="32" fill="black"/>
+<rect x="32" y="176" width="32" height="32" fill="black"/>
+<rect x="32" y="208" width="32" height="32" fill="white"/>
+<rect x="32" y="240" width="32" height="32" fill="white"/>
+<rect x="32" y="272" width="32" height="32" fill="white"/>
+<rect x="32" y="304" width="32" height="16" fill="white"/>
+<rect x="32" width="32" height="16" fill="white"/>
+<rect x="64" y="16" width="32" height="32" fill="white"/>
+<rect x="64" y="48" width="32" height="32" fill="white"/>
+<rect x="64" y="80" width="32" height="32" fill="black"/>
+<rect x="64" y="112" width="32" height="32" fill="white"/>
+<rect x="64" y="144" width="32" height="32" fill="white"/>
+<rect x="64" y="176" width="32" height="32" fill="white"/>
+<rect x="64" y="208" width="32" height="32" fill="black"/>
+<rect x="64" y="240" width="32" height="32" fill="white"/>
+<rect x="64" y="272" width="32" height="32" fill="white"/>
+<rect x="64" y="304" width="32" height="16" fill="white"/>
+<rect x="64" width="32" height="16" fill="white"/>
+<rect x="96" y="16" width="32" height="32" fill="white"/>
+<rect x="96" y="48" width="32" height="32" fill="black"/>
+<rect x="96" y="80" width="32" height="32" fill="white"/>
+<rect x="96" y="112" width="32" height="32" fill="white"/>
+<rect x="96" y="144" width="32" height="32" fill="white"/>
+<rect x="96" y="176" width="32" height="32" fill="white"/>
+<rect x="96" y="208" width="32" height="32" fill="white"/>
+<rect x="96" y="240" width="32" height="32" fill="black"/>
+<rect x="96" y="272" width="32" height="32" fill="white"/>
+<rect x="96" y="304" width="32" height="16" fill="white"/>
+<rect x="96" width="32" height="16" fill="white"/>
+<rect x="128" y="16" width="32" height="32" fill="white"/>
+<rect x="128" y="48" width="32" height="32" fill="black"/>
+<rect x="128" y="80" width="32" height="32" fill="white"/>
+<rect x="128" y="112" width="32" height="32" fill="white"/>
+<rect x="128" y="144" width="32" height="32" fill="white"/>
+<rect x="128" y="176" width="32" height="32" fill="white"/>
+<rect x="128" y="208" width="32" height="32" fill="white"/>
+<rect x="128" y="240" width="32" height="32" fill="black"/>
+<rect x="128" y="272" width="32" height="32" fill="white"/>
+<rect x="128" y="304" width="32" height="16" fill="white"/>
+<rect x="128" width="32" height="16" fill="white"/>
+<rect x="160" y="16" width="32" height="32" fill="white"/>
+<rect x="160" y="48" width="32" height="32" fill="white"/>
+<rect x="160" y="80" width="32" height="32" fill="white"/>
+<rect x="160" y="112" width="32" height="32" fill="white"/>
+<rect x="160" y="144" width="32" height="32" fill="black"/>
+<rect x="160" y="176" width="32" height="32" fill="white"/>
+<rect x="160" y="208" width="32" height="32" fill="white"/>
+<rect x="160" y="240" width="32" height="32" fill="white"/>
+<rect x="160" y="272" width="32" height="32" fill="white"/>
+<rect x="160" y="304" width="32" height="16" fill="white"/>
+<rect x="160" width="32" height="16" fill="white"/>
+<rect x="192" y="16" width="32" height="32" fill="white"/>
+<rect x="192" y="48" width="32" height="32" fill="white"/>
+<rect x="192" y="80" width="32" height="32" fill="black"/>
+<rect x="192" y="112" width="32" height="32" fill="white"/>
+<rect x="192" y="144" width="32" height="32" fill="white"/>
+<rect x="192" y="176" width="32" height="32" fill="white"/>
+<rect x="192" y="208" width="32" height="32" fill="black"/>
+<rect x="192" y="240" width="32" height="32" fill="white"/>
+<rect x="192" y="272" width="32" height="32" fill="white"/>
+<rect x="192" y="304" width="32" height="16" fill="white"/>
+<rect x="192" width="32" height="16" fill="white"/>
+<rect x="224" y="16" width="32" height="32" fill="white"/>
+<rect x="224" y="48" width="32" height="32" fill="white"/>
+<rect x="224" y="80" width="32" height="32" fill="white"/>
+<rect x="224" y="112" width="32" height="32" fill="black"/>
+<rect x="224" y="144" width="32" height="32" fill="black"/>
+<rect x="224" y="176" width="32" height="32" fill="black"/>
+<rect x="224" y="208" width="32" height="32" fill="white"/>
+<rect x="224" y="240" width="32" height="32" fill="white"/>
+<rect x="224" y="272" width="32" height="32" fill="white"/>
+<rect x="224" y="304" width="32" height="16" fill="white"/>
+<rect x="224" width="32" height="16" fill="white"/>
+<rect x="256" y="16" width="32" height="32" fill="white"/>
+<rect x="256" y="48" width="32" height="32" fill="white"/>
+<rect x="256" y="80" width="32" height="32" fill="white"/>
+<rect x="256" y="112" width="32" height="32" fill="white"/>
+<rect x="256" y="144" width="32" height="32" fill="black"/>
+<rect x="256" y="176" width="32" height="32" fill="white"/>
+<rect x="256" y="208" width="32" height="32" fill="white"/>
+<rect x="256" y="240" width="32" height="32" fill="white"/>
+<rect x="256" y="272" width="32" height="32" fill="white"/>
+<rect x="256" y="304" width="32" height="16" fill="white"/>
+<rect x="256" width="32" height="16" fill="white"/>
+<rect x="288" y="16" width="32" height="32" fill="white"/>
+<rect x="288" y="48" width="32" height="32" fill="white"/>
+<rect x="288" y="80" width="32" height="32" fill="white"/>
+<rect x="288" y="112" width="32" height="32" fill="white"/>
+<rect x="288" y="144" width="32" height="32" fill="white"/>
+<rect x="288" y="176" width="32" height="32" fill="white"/>
+<rect x="288" y="208" width="32" height="32" fill="white"/>
+<rect x="288" y="240" width="32" height="32" fill="white"/>
+<rect x="288" y="272" width="32" height="32" fill="white"/>
+<path d="M288 304H320V304C320 312.837 312.837 320 304 320H288V304Z" fill="white"/>
+<path d="M288 0H304C312.837 0 320 7.16344 320 16V16H288V0Z" fill="white"/>
+</svg>

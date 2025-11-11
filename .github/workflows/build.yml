@@ -8,7 +8,10 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -17,9 +20,25 @@ jobs:
         run: |
           javac src/LudusVitae.java
           jar cfe LudusVitae.jar src.LudusVitae src
+          mv LudusVitae.jar src/
+
+      - name: Build executable
+        run: |
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then jpackage -n "Ludus Vitae" -i src --main-jar ./LudusVitae.jar --description "Conway's Game of Life Application" --about-url https://github.com/CorbanPendrak/Ludus-Vitae/ --icon media/LudusVitae-Mac.icns; fi
+          if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then jpackage -n "Ludus Vitae" -i src --main-jar ./LudusVitae.jar --icon media/icon.png; fi
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then jpackage -n "Ludus Vitae" -i src --main-jar ./LudusVitae.jar --icon media/LudusVitae.ico; fi
+        shell: bash
+      
+      - name: Rename and move executable
+        run: |
+          mkdir dist
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then mv "Ludus Vitae-1.0.dmg" dist; fi
+          if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then mv ludus-vitae_1.0-1_amd64.deb dist; fi
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then ls; mv "Ludus Vitae-1.0.exe" dist; fi
+        shell: bash
 
       - name: Upload executable
         uses: actions/upload-artifact@v4
         with:
-          name: LudusVitae.jar
-          path: LudusVitae.jar
+          name: "Ludus-Vitae-${{ matrix.os }}"
+          path: dist/*

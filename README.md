@@ -6,6 +6,8 @@
 # Ludus Vitae
 This is a simple Java application for [Conway's Game of Life](https://conwaylife.com/wiki/Conway%27s_Game_of_Life) for experimenting with the game.
 
+Also, this project was entirely created without the assistance of AI tools. While useful, I wanted to try writing the code and searching the Oracle documentation myself.
+
 ## Features
 This application focuses on simplicity over complicated features, but it still includes many features for easier use.
 
@@ -24,13 +26,19 @@ While most functionality is available in the menu bar, there are a few keyboard 
 - **C**: Clear the board 
 
 ## Usage
-Compile code or download from releases
+Download the executable from the [releases](https://github.com/CorbanPendrak/Ludus-Vitae/releases/) for your system and run as normal. Note, for MacOS, check the release instructions for bypassing the signing requirement.
+
+### Other Systems
+If your operating system is not listed in the releases, you can either clone and compile the code in this repository or download the .jar file in the releases.
+
+To compile the code, just run these commands. This will also generate your own .jar file, which is like a .zip for .java files. 
 ```shell
 javac ./src/LudusVitae.java
 jar cfe LudusVitae.jar src.LudusVitae src
+java -jar LudusVitae.jar
 ```
 
-Run program (or click on .jar)
+To run the .jar program from the releases, just do this command.
 ```shell
 java -jar LudusVitae.jar
 ```
@@ -41,6 +49,7 @@ The name comes from Latin, literally meaning the "Game of Life". I previously ma
 ## Roadmap
 While this project is released, it has some areas for improvement. Here is the current roadmap, but I am not actively developing this project.
 
+- [ ] Compile platform executables with GitHub workflows
 - [ ] Improve print version (originally just used for testing, what about a TUI?)
 - [ ] File I/O
   - [ ] Use [RLE](https://conwaylife.com/wiki/Run_Length_Encoded#cite_note-niemiec-1) encryption

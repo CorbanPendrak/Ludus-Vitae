@@ -23,6 +23,18 @@ While most functionality is available in the menu bar, there are a few keyboard 
 - **R**: Trigger a board resize after dragging the application boundary
 - **C**: Clear the board 
 
+## Usage
+Compile code or download from releases
+```shell
+javac ./src/LudusVitae.java
+jar cfe LudusVitae.jar src.LudusVitae src
+```
+
+Run program (or click on .jar)
+```shell
+java -jar LudusVitae.jar
+```
+
 ## What's with the name? 
 The name comes from Latin, literally meaning the "Game of Life". I previously made a Java application with the same name for Conway's Game of Life after completing the AP Computer Science A and being inspired by what programming could do, but it has unfortunately been lost to the dusty archives of time, which is why I am making sure to use version control this time!
 
@@ -37,12 +49,10 @@ While this project is released, it has some areas for improvement. Here is the c
   - [ ] Color based on # neigbors
   - [ ] Color based on time
 - [ ] Marketing
-  - [ ] Wireframe sketches
   - [ ] UML Diagrams
-  - [ ] Document code
+  - [ ] Better document code
   - [ ] Icon
   - [ ] Demo video
-  - [ ] GitHub Pages website
 - [ ] Research
   - [ ] Optimizing memory
   - [ ] Optimising runtime (concurrency?)

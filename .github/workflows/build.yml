@@ -3,6 +3,7 @@ name: Build Java Jar executable
 on:
   push:
     branches: [ main ]
+    paths-ignore: [ 'docs/**', 'README.md' ]
   pull_request:
     branches: [ main ]
 
@@ -10,6 +11,7 @@ jobs:
   build:
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
@@ -32,9 +34,10 @@ jobs:
       - name: Rename and move executable
         run: |
           mkdir dist
-          if [ "${{ matrix.os }}" = "macos-latest" ]; then mv "Ludus Vitae-1.0.dmg" dist; fi
-          if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then mv ludus-vitae_1.0-1_amd64.deb dist; fi
-          if [ "${{ matrix.os }}" = "windows-latest" ]; then ls; mv "Ludus Vitae-1.0.exe" dist; fi
+          ls
+          if [ "${{ matrix.os }}" = "macos-latest" ]; then mv *.dmg dist; fi
+          if [ "${{ matrix.os }}" = "ubuntu-latest" ]; then mv *.deb dist; fi
+          if [ "${{ matrix.os }}" = "windows-latest" ]; then mv *.exe dist; fi
         shell: bash
 
       - name: Upload executable

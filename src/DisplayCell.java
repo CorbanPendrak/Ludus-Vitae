@@ -1,12 +1,11 @@
 package src;
-/*
- * File: DisplayCell.java
- * Author: Corban Pendrak
- * Date: 08Nov25
- * Purpose: Interface for display cells
+
+/**
+ * Interface for display cells
+ * @author Corban Pendrak
+ * @since 08Nov25
  */
-
-
 public interface DisplayCell {
+    /** Graphical display method */
     public void display();
 }

@@ -1,23 +1,29 @@
 package src;
-/*
- * File: Options.java
- * Author: Corban Pendrak
- * Date: 10Nov25
- * Purpose: Examples
- */
 
 import java.util.ArrayList;
 import java.awt.GridLayout;
 import java.awt.Dimension;
 
+/**
+ * Example patterns to load
+ * @author Corban Pendrak
+ * @since 10Nov25
+ */
 public class Examples {
+    /** Names of example patterns */
     public static String[] exampleNames = {"Glider", "Spaceship", "Spaceships!!!", "Simkin Glider Gun", "50P9"};
+    /** State board */
     public GraphicBoard board;
 
+    /** Constructor */
     public Examples(GraphicBoard board) {
         this.board = board;
     }
 
+    /**
+     * Run an example pattern selected
+     * @param index Example name index
+     */
     public void runExample(int index) {
         String[][] states = {
             {

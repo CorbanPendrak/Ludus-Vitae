@@ -1,10 +1,4 @@
 package src;
-/*
- * File: GraphicBoard.java
- * Author: Corban Pendrak
- * Date: 08Nov25
- * Purpose: Display board for GUI
- */
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -14,7 +8,13 @@ import javax.swing.*;
 import java.awt.event.*;
 import java.awt.Point;
 
+/**
+ * Display board for GUI
+ * @author Corban Pendrak
+ * @since 08Nov25
+ */
 public class GraphicBoard implements DisplayBoard{
+    /**  */
     protected int width;
     protected int height;
     public ArrayList<ArrayList<GraphicCell>> cells;
